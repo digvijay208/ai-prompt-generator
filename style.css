@@ -363,14 +363,14 @@ textarea:focus {
         min-height: 150px;
     }
     
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
-    
     .btn-success {
         padding: 16px;
         font-size: 1.2rem;
         margin-top: 20px;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
     }
 }
 
