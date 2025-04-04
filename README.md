@@ -28,11 +28,11 @@ A web application that helps users craft perfect prompts for AI tools like ChatG
 
 ## Live Demo
 
-Visit the live site at: [AI Prompt Generator](https://ai-prompt-generator.vercel.app)
+Visit the live site at: [AI Prompt Generator](https://ai-prompt-generator-rho.vercel.app/)
 
 ## License
 
-MIT License
+Copyright © 2023 AI Prompt Generator. All rights reserved.
 
 ## Contributing
 
