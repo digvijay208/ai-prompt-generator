@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create perfect AI prompts for ChatGPT, Claude, and other AI tools. Our free AI prompt generator helps you craft effective prompts for better results.">
+    <meta name="keywords" content="AI prompt generator, ChatGPT prompts, AI writing prompts, prompt engineering, AI assistant prompts">
+    <meta name="author" content="AI Prompt Generator">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com/">
+    <meta property="og:title" content="AI Prompt Generator | Create Perfect AI Prompts">
+    <meta property="og:description" content="Free tool to generate optimized prompts for ChatGPT, Claude, and other AI tools. Get better results from AI with well-crafted prompts.">
+    <meta property="og:image" content="https://your-domain.com/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-domain.com/">
+    <meta property="twitter:title" content="AI Prompt Generator | Create Perfect AI Prompts">
+    <meta property="twitter:description" content="Free tool to generate optimized prompts for ChatGPT, Claude, and other AI tools. Get better results from AI with well-crafted prompts.">
+    <meta property="twitter:image" content="https://your-domain.com/twitter-image.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://your-domain.com/">
+    
+    <title>AI Prompt Generator | Create Perfect AI Prompts</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "AI Prompt Generator",
+      "url": "https://your-domain.com/",
+      "description": "Free tool to generate optimized prompts for ChatGPT, Claude, and other AI tools",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Prompt Generator</h1>
+            <p class="tagline">Craft the perfect prompt for your AI needs</p>
+        </header>
+        
+        <main>
+            <section class="generator-section" aria-labelledby="generator-heading">
+                <div class="generator-container">
+                    <div class="options-panel">
+                        <h2 id="generator-heading">Prompt Options</h2>
+                        
+                        <form id="promptForm">
+                            <div class="form-group">
+                                <label for="purpose">What do you want the AI to do?</label>
+                                <select id="purpose" required aria-required="true">
+                                    <option value="" disabled selected>Select a purpose</option>
+                                    <option value="answer">Answer a question</option>
+                                    <option value="generate">Generate content</option>
+                                    <option value="analyze">Analyze data</option>
+                                    <option value="summarize">Summarize text</option>
+                                    <option value="translate">Translate text</option>
+                                    <option value="code">Write code</option>
+                                    <option value="creative">Creative writing</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Subject/Topic</label>
+                                <input type="text" id="subject" placeholder="e.g., Quantum physics, Marketing strategies, Python programming" aria-describedby="subject-hint">
+                                <div id="subject-hint" class="sr-only">Enter the main topic or subject of your prompt</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="details">Specific Details/Requirements</label>
+                                <textarea id="details" placeholder="Provide specific details about what you need. The more precise you are, the better the results will be." aria-describedby="details-hint"></textarea>
+                                <div id="details-hint" class="sr-only">Include any specific requirements, constraints, or additional context</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tone">Tone/Style</label>
+                                <select id="tone">
+                                    <option value="professional">Professional</option>
+                                    <option value="academic">Academic</option>
+                                    <option value="casual">Casual</option>
+                                    <option value="friendly">Friendly</option>
+                                    <option value="humorous">Humorous</option>
+                                    <option value="persuasive">Persuasive</option>
+                                    <option value="technical">Technical</option>
+                                </select>
+                            </div>
+                            
+                            <fieldset class="form-group">
+                                <legend>Additional Options</legend>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="examples" checked>
+                                        <label for="examples">Include examples</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="stepbystep">
+                                        <label for="stepbystep">Step-by-step</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="sources">
+                                        <label for="sources">Cite sources</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            
+                            <div class="form-group">
+                                <label for="format">Output Format</label>
+                                <select id="format">
+                                    <option value="paragraph">Paragraph</option>
+                                    <option value="bullet">Bullet points</option>
+                                    <option value="table">Table</option>
+                                    <option value="markdown">Markdown</option>
+                                    <option value="json">JSON</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" id="generateBtn" class="btn btn-primary">Generate Prompt</button>
+                        </form>
+                    </div>
+                    
+                    <div class="result-panel">
+                        <h2>Generated Prompt</h2>
+                        <div id="generatedPrompt" aria-live="polite">Your custom prompt will appear here...</div>
+                        <button id="copyBtn" class="btn btn-success">Copy to Clipboard</button>
+                        <p class="mobile-note"><small>Note: On mobile devices, you may need to manually select and copy the text.</small></p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="features" aria-labelledby="features-heading">
+                <h2 id="features-heading" class="section-title">Why Use Our Prompt Generator</h2>
+                <div class="features-grid">
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">✨</div>
+                        <h3>Customized Prompts</h3>
+                        <p>Generate prompts tailored to your specific needs and requirements.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">⚡</div>
+                        <h3>Better Results</h3>
+                        <p>Well-structured prompts lead to higher quality AI responses.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🔄</div>
+                        <h3>Multiple Formats</h3>
+                        <p>Get prompts optimized for different output formats and styles.</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>© <span id="currentYear"></span> AI Prompt Generator | Craft perfect prompts for ChatGPT, Claude, and other AI tools</p>
+        </footer>
+    </div>
+    
+    <script src="script.js" defer></script>
+</body>
+</html>
