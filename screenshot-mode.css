@@ -1,0 +1,12 @@
+/* Add this to temporarily hide sidebar for screenshots */
+.sidebar {
+    display: none !important;
+}
+
+.main-content {
+    margin-left: 0 !important;
+}
+
+.sidebar-toggle {
+    display: none !important;
+}

@@ -1,10 +1,57 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Check authentication
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Show logout button
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+    });
+    
     // DOM Elements
     const promptForm = document.getElementById('promptForm');
     const generateBtn = document.getElementById('generateBtn');
     const copyBtn = document.getElementById('copyBtn');
     const generatedPrompt = document.getElementById('generatedPrompt');
     const currentYearSpan = document.getElementById('currentYear');
+    
+    // Sidebar functionality
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const hideSidebarBtn = document.getElementById('hideSidebarBtn');
+    const mainContent = document.querySelector('.main-content');
+    const newChatBtn = document.getElementById('newChatBtn');
+    const historyList = document.getElementById('historyList');
+    
+    sidebarToggle.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('open');
+        } else {
+            sidebar.classList.remove('collapsed');
+            mainContent.classList.remove('expanded');
+            sidebarToggle.classList.remove('visible');
+        }
+    });
+    
+    hideSidebarBtn.addEventListener('click', () => {
+        sidebar.classList.add('collapsed');
+        mainContent.classList.add('expanded');
+        sidebarToggle.classList.add('visible');
+    });
+    
+    newChatBtn.addEventListener('click', () => {
+        clearForm();
+        generatedPrompt.textContent = 'Your custom prompt will appear here...';
+        copyBtn.disabled = true;
+    });
+    
+    // Load prompt history
+    loadPromptHistory();
     
     // Set current year in footer
     currentYearSpan.textContent = new Date().getFullYear();
@@ -41,10 +88,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Generate AI prompt based on form inputs
-    function generatePrompt() {
+    async function generatePrompt() {
         // Show loading state
         generateBtn.disabled = true;
-        generateBtn.innerHTML = '<span class="spinner"></span> Generating...';
+        generateBtn.innerHTML = '<span class="spinner"></span> Generating & Refining...';
         
         // Get form values
         const purpose = document.getElementById('purpose').value;
@@ -69,9 +116,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Add slight delay to simulate processing
-        setTimeout(() => {
-            // Generate the prompt
+        try {
+            // Generate the initial prompt
             let prompt = buildPrompt({
                 purpose,
                 subject,
@@ -83,18 +129,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 format
             });
             
-            // Display the generated prompt
+            // Refine with AI
+            const token = localStorage.getItem('token');
+            const response = await fetch('/api/refine-prompt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ userPrompt: prompt })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                prompt = data.refinedPrompt;
+            }
+            
+            // Display the refined prompt
             generatedPrompt.textContent = prompt;
             copyBtn.disabled = false;
+            
+            // Save to history
+            saveToHistory(prompt, { purpose, subject, details });
             
             // Scroll to result on mobile
             if (window.innerWidth < 768) {
                 document.querySelector('.result-panel').scrollIntoView({ behavior: 'smooth' });
             }
-            
+        } catch (error) {
+            console.error('Error generating prompt:', error);
+            showError('Error generating prompt. Please try again.');
+        } finally {
             // Reset generate button
             resetGenerateButton();
-        }, 500);
+        }
     }
     
     // Build prompt string from parameters
@@ -246,6 +314,136 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('offline');
         showError("You're offline. Some features may not work properly.");
     });
+    
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && 
+            !sidebar.contains(e.target) && 
+            !sidebarToggle.contains(e.target) && 
+            sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+        }
+    });
+    
+    // Prompt history functions
+    async function saveToHistory(prompt, metadata) {
+        const token = localStorage.getItem('token');
+        const preview = generatePreview(metadata);
+        
+        try {
+            await fetch('/api/save-prompt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ prompt, metadata, preview })
+            });
+            
+            loadPromptHistory();
+        } catch (error) {
+            console.error('Error saving prompt:', error);
+        }
+    }
+    
+    function generatePreview(metadata) {
+        const { purpose, subject, details } = metadata;
+        if (subject) {
+            return `${purpose}: ${subject}`.substring(0, 50) + (subject.length > 40 ? '...' : '');
+        }
+        return `${purpose}: ${details}`.substring(0, 50) + (details.length > 40 ? '...' : '');
+    }
+    
+    async function loadPromptHistory() {
+        const token = localStorage.getItem('token');
+        historyList.innerHTML = '<div style="color: #666; font-size: 14px; padding: 10px;">Loading...</div>';
+        
+        try {
+            const response = await fetch('/api/prompt-history', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            const history = await response.json();
+            historyList.innerHTML = '';
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<div style="color: #666; font-size: 14px; padding: 10px;">No prompts yet</div>';
+                return;
+            }
+            
+            history.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item-wrapper';
+                
+                const historyBtn = document.createElement('button');
+                historyBtn.className = 'history-item';
+                historyBtn.textContent = item.preview;
+                historyBtn.title = item.prompt;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerHTML = '&times;';
+                deleteBtn.title = 'Delete';
+                
+                historyBtn.addEventListener('click', () => {
+                    generatedPrompt.textContent = item.prompt;
+                    copyBtn.disabled = false;
+                    
+                    document.querySelectorAll('.history-item').forEach(btn => btn.classList.remove('active'));
+                    historyBtn.classList.add('active');
+                    
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('open');
+                    }
+                });
+                
+                deleteBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    if (confirm('Delete this prompt?')) {
+                        await deletePrompt(item._id);
+                    }
+                });
+                
+                historyItem.appendChild(historyBtn);
+                historyItem.appendChild(deleteBtn);
+                historyList.appendChild(historyItem);
+            });
+        } catch (error) {
+            console.error('Error loading history:', error);
+            historyList.innerHTML = '<div style="color: #666; font-size: 14px; padding: 10px;">Error loading history</div>';
+        }
+    }
+    
+    async function deletePrompt(promptId) {
+        const token = localStorage.getItem('token');
+        try {
+            await fetch(`/api/prompt-history/${promptId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            loadPromptHistory();
+        } catch (error) {
+            console.error('Error deleting prompt:', error);
+        }
+    }
+    
+    function clearForm() {
+        document.getElementById('purpose').value = '';
+        document.getElementById('subject').value = '';
+        document.getElementById('details').value = '';
+        document.getElementById('tone').value = 'professional';
+        document.getElementById('format').value = 'paragraph';
+        document.getElementById('examples').checked = true;
+        document.getElementById('stepbystep').checked = false;
+        document.getElementById('sources').checked = false;
+        
+        // Remove active state from history items
+        document.querySelectorAll('.history-item').forEach(btn => btn.classList.remove('active'));
+    }
     
     // Initialize the app
     init();

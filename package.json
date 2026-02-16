@@ -1,0 +1,23 @@
+{
+  "name": "ai-prompt-generator",
+  "version": "1.0.0",
+  "description": "AI Prompt Generator with authentication",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start-simple": "node server-simple.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.29.0",
+    "@google/generative-ai": "^0.24.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,28 @@
+ADMIN PANEL SETUP INSTRUCTIONS
+================================
+
+1. RESTART THE SERVER (Important!)
+   - Stop the current server (Ctrl+C)
+   - Run: node server.js
+
+2. LOGIN AS ADMIN
+   - Go to: http://localhost:3000/login.html
+   - Email: admin@admin.com
+   - Password: admin123
+
+3. ACCESS ADMIN PANEL
+   - After login, go to: http://localhost:3000/admin.html
+   - You'll see user activity dashboard
+
+FEATURES:
+- Total users count
+- Total prompts generated
+- Active users today
+- All user list with activity
+- Recent activity feed (last 50 prompts)
+- Auto-refresh every 30 seconds
+
+TROUBLESHOOTING:
+- If "Access denied" appears, make sure you logged in with admin@admin.com
+- If page is blank, check browser console (F12) for errors
+- Make sure MongoDB is running
