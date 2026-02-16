@@ -56,11 +56,43 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>AI Prompt Generator</h1>
-            <p class="tagline">Craft the perfect prompt for your AI needs</p>
-        </header>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <button class="hide-sidebar-btn" id="hideSidebarBtn" title="Hide sidebar">
+                    ←
+                </button>
+                <button class="new-chat-btn" id="newChatBtn">
+                    <span>+</span> New Prompt
+                </button>
+            </div>
+            <div class="sidebar-content">
+                <div class="history-section">
+                    <h3>Recent</h3>
+                    <div class="history-list" id="historyList">
+                        <!-- History items will be populated here -->
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <div class="container">
+                <header class="main-header">
+                    <div class="header-left">
+                        <button class="sidebar-toggle" id="sidebarToggle" title="Show sidebar">☰</button>
+                    </div>
+                    <div class="header-center">
+                        <h1>AI Prompt Generator</h1>
+                        <p class="tagline">Craft the perfect prompt for your AI needs</p>
+                    </div>
+                    <div class="header-right">
+                        <!-- Space for future features -->
+                    </div>
+                </header>
         
         <main>
             <section class="generator-section" aria-labelledby="generator-heading">
@@ -171,11 +203,11 @@
                     </article>
                 </div>
             </section>
+                <footer>
+                    <p>© <span id="currentYear"></span> AI Prompt Generator | Craft perfect prompts for ChatGPT, Claude, and other AI tools</p>
+                </footer>
+            </div>
         </main>
-        
-        <footer>
-            <p>© <span id="currentYear"></span> AI Prompt Generator | Craft perfect prompts for ChatGPT, Claude, and other AI tools</p>
-        </footer>
     </div>
     
     <script src="script.js" defer></script>
