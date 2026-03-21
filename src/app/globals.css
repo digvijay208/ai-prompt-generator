@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00f5d4;
+  --color-secondary: #9d4edd;
+  --color-accent: #f72585;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-bg-dark: #030014;
+  
+  --shadow-glow-cyan: 0 0 40px rgba(0, 245, 212, 0.2);
+  --shadow-glow-purple: 0 0 40px rgba(157, 78, 221, 0.2);
+  --shadow-premium: inset 0 1px 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.05), 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-dark text-slate-200 min-h-screen antialiased overflow-x-hidden;
+    background-color: var(--color-bg-dark);
+  }
+
+  /* Immersive Ambient Glow */
+  body::before {
+    content: "";
+    position: fixed;
+    top: -20%;
+    left: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(157, 78, 221, 0.15) 0%, transparent 60%);
+    @apply pointer-events-none -z-10 blur-[120px] rounded-full;
+  }
+  
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: -20%;
+    right: -10%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle, rgba(0, 245, 212, 0.15) 0%, transparent 60%);
+    @apply pointer-events-none -z-10 blur-[100px] rounded-full;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply relative bg-white/[0.02] backdrop-blur-[24px] border border-white/[0.05] shadow-premium overflow-hidden;
+  }
+  
+  .glass-panel::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent opacity-0 transition-opacity duration-500 pointer-events-none;
+  }
+  
+  .glass-panel:hover::before {
+    @apply opacity-100;
+  }
+
+  .status-badge {
+    @apply bg-black/60 text-zinc-300 px-4 py-2 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase flex items-center gap-2 border border-white/[0.08] whitespace-nowrap shadow-[0_0_20px_rgba(16,185,129,0.1)] backdrop-blur-md transition-all hover:border-success/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)];
+  }
+  
+  .form-input-modern {
+    @apply w-full bg-black/30 border border-white/[0.06] rounded-xl p-4 text-[13px] text-white placeholder:text-white/20 focus:border-primary/40 focus:bg-black/50 focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all duration-300 shadow-inner;
+  }
+}
+
+@layer utilities {
+  .text-shadow-glow-cyan {
+    text-shadow: 0 0 20px rgba(0, 245, 212, 0.5);
+  }
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+}
+
+/* Base resets */
+::selection {
+  @apply bg-primary/30 text-white;
+}
+
+/* Light Theme Enhancements - Earthy Minimalist */
+:root.light {
+  --color-primary: #341F09;
+  --color-secondary: #6F4114;
+  --color-accent: #6F4114;
+  --color-bg-dark: #F7F1ED;
+}
+
+:root.light body {
+  background-image: none !important;
+  background-color: var(--color-bg-dark) !important;
+}
+
+:root.light body::before {
+  background: radial-gradient(circle, rgba(111, 65, 20, 0.08) 0%, transparent 60%);
+}
+:root.light body::after {
+  background: radial-gradient(circle, rgba(111, 65, 20, 0.05) 0%, transparent 60%);
+}
+
+:root.light .text-white,
+:root.light .text-slate-200,
+:root.light .text-slate-300 {
+  color: #341F09 !important;
+}
+
+:root.light .text-white\/20,
+:root.light .text-white\/30,
+:root.light .text-white\/40,
+:root.light .text-white\/50,
+:root.light .text-white\/60,
+:root.light .text-white\/70,
+:root.light .text-white\/80,
+:root.light .text-white\/90 {
+  color: #6F4114 !important;
+}
+
+:root.light .bg-white {
+  background-color: #341F09 !important;
+}
+
+:root.light .bg-white,
+:root.light .bg-gradient-to-r.from-primary.to-\[\#4cc9f0\] {
+  background: #341F09 !important;
+  color: #F7F1ED !important;
+}
+
+:root.light .glass-panel {
+  background-color: #E1D5C6 !important;
+  border-color: rgba(111, 65, 20, 0.1) !important;
+  box-shadow: 0 10px 40px -10px rgba(52, 31, 9, 0.08) !important;
+}
+
+:root.light .bg-white\/\[0\.01\],
+:root.light .bg-white\/\[0\.02\],
+:root.light .bg-white\/\[0\.03\],
+:root.light .bg-white\/5,
+:root.light .bg-white\/10,
+:root.light .bg-black\/50,
+:root.light .bg-black\/40,
+:root.light .bg-black\/30 {
+  background-color: #F7F1ED !important;
+  border-color: rgba(111, 65, 20, 0.1) !important;
+  color: #341F09 !important;
+}
+
+:root.light .border-white\/\[0\.02\],
+:root.light .border-white\/\[0\.03\],
+:root.light .border-white\/\[0\.04\],
+:root.light .border-white\/\[0\.05\],
+:root.light .border-white\/\[0\.06\],
+:root.light .border-white\/\[0\.08\],
+:root.light .border-white\/10,
+:root.light .border-white\/20 {
+  border-color: rgba(111, 65, 20, 0.15) !important;
+}
+
+:root.light .hover\:bg-white\/\[0\.02\]:hover,
+:root.light .hover\:bg-white\/\[0\.03\]:hover,
+:root.light .hover\:bg-white\/\[0\.05\]:hover,
+:root.light .hover\:bg-white\/\[0\.08\]:hover {
+  background-color: rgba(111, 65, 20, 0.08) !important;
+}
+
+:root.light .form-input-modern {
+  background-color: #F7F1ED !important;
+  color: #341F09 !important;
+  border-color: rgba(111, 65, 20, 0.2) !important;
+}
+
+:root.light .form-input-modern::placeholder {
+  color: rgba(111, 65, 20, 0.5) !important;
+}
+
+:root.light .status-badge {
+  background-color: #E1D5C6 !important;
+  color: #6F4114 !important;
+  border-color: rgba(111, 65, 20, 0.2) !important;
+  box-shadow: 0 4px 15px rgba(52, 31, 9, 0.05) !important;
+}
+
+:root.light .from-white.to-white\/60,
+:root.light .from-primary.via-\[\#4cc9f0\].to-secondary {
+  background-image: linear-gradient(to right, #341F09, #6F4114) !important;
+  -webkit-background-clip: text !important;
+  color: transparent !important;
+  text-shadow: none !important;
+  drop-shadow: none !important;
+}
+
+:root.light .shadow-premium,
+:root.light .shadow-\[0_0_15px_rgba\(0\,0\,0\,0\.5\)\] {
+  box-shadow: none !important;
+}
+
+:root.light .drop-shadow-\[0_0_30px_rgba\(0\,245\,212\,0\.3\)\] {
+  filter: none !important;
+}
+
+select {
+  @apply cursor-pointer;
+}
+
+option {
+  @apply bg-[#0f111a] text-white;
+}
+
+:root.light option, :root.light select {
+  background-color: #E1D5C6 !important;
+  color: #341F09 !important;
+}
