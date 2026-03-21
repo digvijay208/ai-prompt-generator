@@ -1,41 +1,36 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
-const USERS_FILE = path.join(process.cwd(), 'users.json');
-
-function loadUsers() {
-    try {
-        if (!fs.existsSync(USERS_FILE)) {
-            return [];
-        }
-        return JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
-    } catch {
-        return [];
-    }
-}
+import connectDB from '@/lib/mongodb';
+import User from '@/models/User';
 
 export async function POST(req: Request) {
     try {
         const { email, password } = await req.json();
-        
+
         if (!email || !password) {
             return NextResponse.json({ message: 'Email and password are required' }, { status: 400 });
         }
 
-        const users = loadUsers();
-        const user = users.find((u: any) => u.email === email);
+        await connectDB();
+
+        const user = await User.findOne({ email });
 
         if (!user || !await bcrypt.compare(password, user.password)) {
             return NextResponse.json({ message: 'Invalid credentials. Please create an account.' }, { status: 401 });
         }
 
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'fallback_secret_key', { expiresIn: '24h' });
-        
-        return NextResponse.json({ token, userId: user.id, message: 'Logged in successfully' }, { status: 200 });
+        const token = jwt.sign(
+            { userId: user._id.toString() }, 
+            process.env.JWT_SECRET || 'fallback_secret_key', 
+            { expiresIn: '24h' }
+        );
+
+        return NextResponse.json(
+            { token, userId: user._id.toString(), message: 'Logged in successfully' }, 
+            { status: 200 }
+        );
     } catch (error) {
-        return NextResponse.json({ message: 'Server error' }, { status: 500 });
+        console.error('Login Error:', error);
     }
 }
