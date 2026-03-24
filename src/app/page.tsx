@@ -73,7 +73,7 @@ export default function Dashboard() {
       <div className="flex-1 ml-0 lg:ml-[320px] p-6 lg:p-12 transition-all duration-500 overflow-y-auto z-10 relative">
         <div className="max-w-7xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
           
-          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12 pt-4 relative">
+          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12 pt-16 lg:pt-4 relative">
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-white/[0.03] border border-white/[0.08] text-[11px] font-bold text-white/70 tracking-widest backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.02)] animate-float">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-glow" />

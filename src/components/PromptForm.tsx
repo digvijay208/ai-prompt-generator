@@ -210,7 +210,7 @@ export default function PromptForm({ onGenerate, isGenerating, setIsGenerating }
           
           <button
             type="submit"
-            disabled={!mounted || isGenerating || (!options.subject && !options.details)}
+            disabled={isGenerating || (!options.subject && !options.details)}
             className="w-full relative group overflow-hidden py-4 bg-white text-bg-dark font-black rounded-xl transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-40 disabled:bg-white/5 disabled:text-white/40 disabled:hover:scale-100 border border-transparent disabled:border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] disabled:shadow-none"
           >
             {/* Button internal gradient hover */}
