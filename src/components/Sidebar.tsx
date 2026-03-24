@@ -187,7 +187,7 @@ export default function Sidebar({
             exit="exit"
             onClick={() => setIsOpen(true)}
             title="Open sidebar"
-            className="hidden lg:flex fixed left-4 top-[3vh] z-[1001] items-center gap-2 px-3 py-2.5 rounded-xl bg-[#0d1117]/90 backdrop-blur border border-primary/25 text-primary text-sm font-semibold shadow-[0_0_18px_rgba(0,245,212,0.2)] hover:shadow-[0_0_28px_rgba(0,245,212,0.4)] hover:border-primary/50 hover:scale-105 transition-all duration-200"
+            className="hidden lg:flex fixed left-4 top-[3vh] z-[1001] items-center gap-2 px-3 py-2.5 rounded-xl glass-panel text-white hover:text-primary text-sm font-semibold shadow-md dark:shadow-[0_0_18px_rgba(0,245,212,0.2)] hover:shadow-lg dark:hover:shadow-[0_0_28px_rgba(0,245,212,0.4)] hover:scale-105 transition-all duration-200"
           >
             <PanelLeftOpen size={17} />
             <span className="text-xs tracking-wide">Menu</span>
@@ -205,7 +205,7 @@ export default function Sidebar({
             exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
-            className="lg:hidden fixed top-4 left-4 z-[1001] w-11 h-11 rounded-2xl bg-[#0d1117]/90 backdrop-blur-md border border-primary/25 flex items-center justify-center text-primary shadow-[0_0_16px_rgba(0,245,212,0.2)] hover:shadow-[0_0_24px_rgba(0,245,212,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
+            className="lg:hidden fixed top-4 left-4 z-[1001] w-11 h-11 rounded-2xl glass-panel flex items-center justify-center text-white hover:text-primary transition-all duration-200 shadow-lg dark:shadow-[0_0_16px_rgba(0,245,212,0.2)] hover:shadow-xl dark:hover:shadow-[0_0_24px_rgba(0,245,212,0.4)] hover:scale-105 active:scale-95"
           >
             <Menu size={20} />
           </motion.button>
