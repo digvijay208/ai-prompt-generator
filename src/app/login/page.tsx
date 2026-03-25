@@ -88,6 +88,13 @@ export default function LoginPage() {
             </div>
           </div>
 
+          <div className="text-center pt-2">
+            <p className="text-[11px] text-text-secondary">
+              Protected by industry-standard encryption. See our{' '}
+              <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
+            </p>
+          </div>
+
           <button 
             type="submit"
             className="w-full py-4 bg-gradient-to-r from-primary to-secondary text-black font-black rounded-xl shadow-[0_0_30px_rgba(0,210,255,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-widest text-sm mt-4"

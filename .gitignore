@@ -6,3 +6,4 @@ users.json
 .next
 
 .env.*
+next-env.d.ts
