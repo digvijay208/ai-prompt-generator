@@ -133,7 +133,8 @@
 :root.light .text-white\/60,
 :root.light .text-white\/70,
 :root.light .text-white\/80,
-:root.light .text-white\/90 {
+:root.light .text-white\/90,
+:root.light .text-text-secondary {
   color: #6F4114 !important;
 }
 

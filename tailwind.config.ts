@@ -16,6 +16,7 @@ const config: Config = {
         error: "#ef4444",
         "bg-dark": "#030014", // Very deep midnight blueprint
         "panel-dark": "rgba(20, 20, 30, 0.4)",
+        "text-secondary": "rgba(255, 255, 255, 0.65)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
