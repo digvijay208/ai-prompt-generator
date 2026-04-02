@@ -5,16 +5,18 @@ import jwt from 'jsonwebtoken';
 export async function POST(req: Request) {
   try {
     const authHeader = req.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const token = authHeader.split(' ')[1];
+    let isAuthenticated = false;
     
-    try {
-      jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_key');
-    } catch (err) {
-      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
+    // Check if user is authenticated (but don't require it)
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      try {
+        jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_key');
+        isAuthenticated = true;
+      } catch (err) {
+        // Token is invalid, treat as guest user
+        isAuthenticated = false;
+      }
     }
 
     const { userInput, options } = await req.json();
@@ -25,7 +27,7 @@ export async function POST(req: Request) {
 
     const output = await generateAIPrompt(userInput, options);
     
-    return NextResponse.json({ prompt: output });
+    return NextResponse.json({ prompt: output, isAuthenticated });
   } catch (error: any) {
     console.error('--- API ERROR ---', error);
     return NextResponse.json({ error: 'Failed to generate prompt' }, { status: 500 });

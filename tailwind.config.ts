@@ -27,6 +27,7 @@ const config: Config = {
         'flow-bg': 'flowBackground 15s ease-in-out infinite alternate',
         'float': 'float 6s ease-in-out infinite',
         'pulse-glow': 'pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'bounce-slow': 'bounceSlow 2s ease-in-out infinite',
       },
       keyframes: {
         flowBackground: {
@@ -40,6 +41,10 @@ const config: Config = {
         pulseGlow: {
           '0%, 100%': { opacity: '0.6', filter: 'brightness(1)' },
           '50%': { opacity: '1', filter: 'brightness(1.3)' },
+        },
+        bounceSlow: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
         }
       }
     },

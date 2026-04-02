@@ -5,21 +5,56 @@ import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import PromptForm from '@/components/PromptForm';
 import ResultPanel from '@/components/ResultPanel';
+import AuthPopup from '@/components/AuthPopup';
 
 export default function Dashboard() {
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [history, setHistory] = useState<{title: string, prompt: string}[]>([]);
+  const [showAuthPopup, setShowAuthPopup] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
-    if (!token) {
-      router.push('/login');
+    
+    // Validate token by decoding and checking expiry
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const isExpired = payload.exp && payload.exp * 1000 < Date.now();
+        if (isExpired) {
+          // Migrate user history to guest key before clearing userId
+          if (userId) {
+            const userHistory = localStorage.getItem(`prompt_history_${userId}`);
+            if (userHistory) {
+              localStorage.setItem('prompt_history', userHistory);
+            }
+          }
+          localStorage.removeItem('token');
+          localStorage.removeItem('userId');
+          setIsAuthenticated(false);
+        } else {
+          setIsAuthenticated(true);
+        }
+      } catch {
+        // Malformed token — migrate history and clear
+        if (userId) {
+          const userHistory = localStorage.getItem(`prompt_history_${userId}`);
+          if (userHistory) {
+            localStorage.setItem('prompt_history', userHistory);
+          }
+        }
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        setIsAuthenticated(false);
+      }
     }
 
-    const historyKey = userId ? `prompt_history_${userId}` : 'prompt_history';
+    // Always read history using current auth state
+    const activeUserId = localStorage.getItem('userId');
+    const historyKey = activeUserId ? `prompt_history_${activeUserId}` : 'prompt_history';
     const savedHistory = localStorage.getItem(historyKey);
     if (savedHistory) {
       try {
@@ -39,12 +74,19 @@ export default function Dashboard() {
     let title = typeof prompt === 'string' ? prompt.split(' ').slice(0, 4).join(' ').replace(/[^a-zA-Z0-9 ]/g, '') : 'New Prompt';
     if (!title) title = 'New Prompt';
     
-    // Update history
+    // Update history — use consistent key based on current auth state
+    const activeUserId = localStorage.getItem('userId');
+    const historyKey = activeUserId ? `prompt_history_${activeUserId}` : 'prompt_history';
     const newHistory = [{ title, prompt }, ...history].slice(0, 15);
     setHistory(newHistory);
-    const userId = localStorage.getItem('userId');
-    const historyKey = userId ? `prompt_history_${userId}` : 'prompt_history';
     localStorage.setItem(historyKey, JSON.stringify(newHistory));
+
+    // Show auth popup after generation if not logged in
+    if (!isAuthenticated) {
+      setTimeout(() => {
+        setShowAuthPopup(true);
+      }, 1500);
+    }
   };
 
   const handleDeleteHistory = (index: number) => {
@@ -101,6 +143,7 @@ export default function Dashboard() {
                onGenerate={handleGenerate} 
                isGenerating={isGenerating}
                setIsGenerating={setIsGenerating}
+               isAuthenticated={isAuthenticated}
             />
             <ResultPanel 
               prompt={generatedPrompt} 
@@ -109,6 +152,13 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Auth Popup - shows after first generation for unauthenticated users */}
+      <AuthPopup
+        isOpen={showAuthPopup}
+        onClose={() => setShowAuthPopup(false)}
+        generatedPrompt={generatedPrompt}
+      />
     </main>
   );
 }

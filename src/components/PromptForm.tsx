@@ -7,9 +7,10 @@ interface PromptFormProps {
   onGenerate: (prompt: string) => void;
   isGenerating: boolean;
   setIsGenerating: (val: boolean) => void;
+  isAuthenticated?: boolean;
 }
 
-export default function PromptForm({ onGenerate, isGenerating, setIsGenerating }: PromptFormProps) {
+export default function PromptForm({ onGenerate, isGenerating, setIsGenerating, isAuthenticated }: PromptFormProps) {
   const [mounted, setMounted] = useState(false);
   const [options, setOptions] = useState({
     purpose: 'Select a purpose',
@@ -32,9 +33,14 @@ export default function PromptForm({ onGenerate, isGenerating, setIsGenerating }
 
     setIsGenerating(true);
     try {
+      const token = localStorage.getItem('token');
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
       const res = await fetch('/api/generate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+        headers,
         body: JSON.stringify({ userInput: options.subject || options.details, options })
       });
       const data = await res.json();
